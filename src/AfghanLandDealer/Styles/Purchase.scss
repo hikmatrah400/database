@@ -1,0 +1,55 @@
+@import "../../Functions/Functions.scss";
+
+.gridFilter {
+  ::placeholder {
+    color: #9a9a9a;
+  }
+}
+
+h1 {
+  font-size: 2.5rem !important;
+}
+
+.allPurchaseCon {
+  .row {
+    label {
+      font-size: 1.6rem;
+      text-transform: capitalize;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      font-size: 1.7rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.6rem;
+      font-weight: 600;
+
+      &::-webkit-inner-spin-button {
+        display: none;
+      }
+
+      &:disabled {
+        background: #fff;
+      }
+    }
+
+    .formBtn {
+      width: 100%;
+      text-transform: capitalize;
+      font-size: 1.5rem;
+      border-radius: 5rem;
+      color: white;
+
+      &.saveBtn {
+        background: #427987;
+      }
+      &.updateBtn {
+        background: #0080e2;
+      }
+      &.deleteBtn {
+        background: #cb0e00;
+      }
+    }
+  }
+}

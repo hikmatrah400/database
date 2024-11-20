@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "regularPoppins";
+  src: url("../Fonts/Poppins-Regular.ttf");
+}
+
+$primary_color: #1a73e8;
+$main_color: #427987;
+
+@mixin DisplayFlex($align, $justify, $dir) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-direction: $dir;
+}
+
+@mixin fontPoppins {
+  font-family: "poppinsSemi", sans-serif;
+}
+
+@mixin animatedBtn {
+  display: block;
+  width: 100%;
+  height: 5rem;
+  border-radius: 2.5rem;
+  margin: 1rem 0;
+  text-transform: uppercase;
+  font-size: 1.9rem;
+  outline: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  @include fontPoppins;
+  background: linear-gradient(to right, #4481eb, #04befe, #4481eb);
+  background-size: 200%;
+  transition: 0.5s;
+}

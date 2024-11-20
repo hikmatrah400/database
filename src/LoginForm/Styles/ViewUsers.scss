@@ -1,0 +1,92 @@
+@import "../Functions/Functions.scss";
+
+.usersContainer {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  transform: translateY(-120%);
+  transition: 0.4s ease;
+  background: #fff;
+
+  h5 {
+    @include LinkStyle;
+    margin-top: 2rem !important;
+
+    &:hover {
+      color: #04befe;
+      text-decoration: underline;
+    }
+  }
+
+  .gridView {
+    border-radius: 1rem;
+
+    table {
+      min-width: max-content;
+
+      th,
+      td {
+        font-size: 1.6rem;
+        text-align: center;
+        min-width: max-content;
+        padding: 0.6rem;
+      }
+      th {
+        font-weight: 600;
+        background: #427987;
+        color: #fff;
+        border: 1px solid #2c2c2c4a;
+        position: sticky;
+        top: 0rem;
+
+        svg {
+          color: #fff;
+          font-size: 2rem;
+        }
+        .filterIcon {
+          color: transparent;
+        }
+      }
+      td {
+        border: 1px solid #bdbdbd;
+        transition: all 0.2s ease;
+        font-weight: 500;
+
+        input {
+          font-size: 1.7rem;
+          border: none;
+          pointer-events: none;
+          outline: none;
+          background: transparent;
+          text-align: center;
+        }
+      }
+
+      .selectIcon {
+        cursor: pointer;
+        font-size: 1.7rem;
+
+        svg {
+          color: #427987;
+          font-size: 1.7rem;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+
+        .gridCheckBox svg {
+          color: #0c65d9 !important;
+        }
+      }
+
+      tfoot th {
+        position: sticky;
+        bottom: -0.1rem;
+        background: #427987;
+        color: #fff;
+      }
+    }
+  }
+}
