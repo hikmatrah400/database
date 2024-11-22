@@ -93,7 +93,6 @@ const AdminLogin = ({
 
   const SubmitForm = async (e) => {
     e.preventDefault();
-    const getCode = sessionStorage.getItem("partTwo");
 
     setBtnLoad(true);
     try {
