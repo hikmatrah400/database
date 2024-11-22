@@ -315,13 +315,11 @@ const InputList = ({
 
         toast.success("Record Saved Successfully.");
 
-        axios
-          .post(ApiName, sendData)
-          .catch(() => {
-            setLoading(false);
-            ServerUpdates(Data[0]);
-            ModalDialog.error("Network Error", "Can't Connect to Server!");
-          });
+        axios.post(ApiName, sendData).catch(() => {
+          setLoading(false);
+          ServerUpdates(Data[0]);
+          ModalDialog.error("Network Error", "Can't Connect to Server!");
+        });
       } else {
         ModalDialog.info(
           "Information",
@@ -368,7 +366,7 @@ const InputList = ({
               <label className="form-label">Bill#:</label>
               <input
                 autoFocus
-                type="number"
+                type="text"
                 name="billNum"
                 value={billNum}
                 min={0}

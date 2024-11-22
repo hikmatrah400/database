@@ -471,7 +471,9 @@ const Gridveiw = ({
                         (itemSelected.length > 0 &&
                           itemSelected.length < Data[0].length)
                       )
-                        DeleteObj[1](DeleteObj[0].map((elm) => elm));
+                        DeleteObj[1](
+                          DeleteObj[0].map((elm) => ({ ...elm, delId: "" }))
+                        );
                       else {
                         const newData = [
                           ...Data[0].map((elm) => ({ ...elm, delId: elm.id })),

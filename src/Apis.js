@@ -19,26 +19,26 @@
 
 //------------------------------------------------------------------------
 
-export const emptyApi = "https://serverdata-1jeb.onrender.com/empty";
+export const emptyApi = "https://sprout-sticky-moonflower.glitch.me/empty";
 export const purchaseListApi =
-  "https://serverdata-1jeb.onrender.com/db-purchase-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-purchase-of-the-Data";
 export const stockPruchaseApi =
-  "https://serverdata-1jeb.onrender.com/db-stock-purchase-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-stock-purchase-of-the-Data";
 
 export const sellListApi =
-  "https://serverdata-1jeb.onrender.com/db-sell-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-sell-of-the-Data";
 export const stockSellApi =
-  "https://serverdata-1jeb.onrender.com/db-stock-sell-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-stock-sell-of-the-Data";
 
 export const expensesApi =
-  "https://serverdata-1jeb.onrender.com/db-afghan-land-expenses-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-afghan-land-expenses-of-the-Data";
 export const stockExpenseApi =
-  "https://serverdata-1jeb.onrender.com/db-stock-expenses-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-stock-expenses-of-the-Data";
 
 export const historyApi =
-  "https://serverdata-1jeb.onrender.com/db-part-of-history-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-part-of-history-of-the-Data";
 
 export const adminLoginApi =
-  "https://serverdata-1jeb.onrender.com/db-part-one-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-part-one-of-the-Data";
 export const notLoginApi =
-  "https://serverdata-1jeb.onrender.com/db-part-two-of-the-Data";
+  "https://sprout-sticky-moonflower.glitch.me/db-part-two-of-the-Data";

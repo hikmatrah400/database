@@ -49,6 +49,7 @@ const LoginForm = ({
   });
   const [loading, setLoading] = useState(false);
   const [btnLoad, setBtnLoad] = useState(false);
+  const [showLoginLoad, setShowLoginLoad] = useState(false);
 
   const inputFocus = (e) => {
     const inputBox = e.target.parentElement;
@@ -125,6 +126,7 @@ const LoginForm = ({
     try {
       const response = await axios.get(notLoginAPI);
       setData(response.data);
+      setShowLoginLoad(false);
     } catch (error) {
       setLoading(false);
       ModalDialog.error("Network Error", "Can't connect to Server!");
@@ -135,7 +137,9 @@ const LoginForm = ({
     sessionStorage.removeItem("partOne");
     sessionStorage.removeItem("partTwo");
     setLogin({ prevCode: "", userCode: "", path: "" });
+    setShowLoginLoad(true);
     loadData();
+
     // eslint-disable-next-line
   }, []);
 
@@ -262,8 +266,7 @@ const LoginForm = ({
                   {...{
                     UpdateLogin,
                     databaseCode,
-                    loginData: data,
-                    loadData,
+                    showLoginLoad,
                     ...PageProp,
                   }}
                 />

@@ -12,8 +12,7 @@ import ShowDialog from "../../UI/BsModalDialog/BsModalDialog";
 const AdminLogin = ({
   SimpleLoad,
   load,
-  loginData,
-  loadData,
+  showLoginLoad,
   pageLoad,
   inputProps,
   LoginItems,
@@ -88,79 +87,64 @@ const AdminLogin = ({
   const url = `${AdminLoginAPI}?partOne=${username}&partTwo=${password}`;
   const GetData = async () => {
     try {
-      if (loginData.length > 0) {
-        setBtnLoad(true);
-        const response = await axios.get(url);
-        const data = response.data;
+      setBtnLoad(true);
+      const response = await axios.get(url);
+      const data = response.data;
 
-        if (data.length > 0) {
-          axios
-            .get(url)
-            .then((res) => {
-              const data = res.data[0];
-              if (username === data.partOne && password === data.partTwo) {
-                if (code !== 0) {
-                  sessionStorage.setItem("partOne", username);
-                  sessionStorage.setItem("partTwo", code);
+      if (data.length > 0) {
+        axios
+          .get(url)
+          .then((res) => {
+            const data = res.data[0];
+            if (username === data.partOne && password === data.partTwo) {
+              if (code !== 0) {
+                sessionStorage.setItem("partOne", username);
+                sessionStorage.setItem("partTwo", code);
 
-                  if (data.nvigateTo === "Afghan Land & Dealer") {
-                    UpdateLogin(code, username, "afghanAndDealer");
-                    navigate(
-                      `/afghanAndDealer/${
-                        data.nvigateType === "Purchaser"
-                          ? "purchaseList"
-                          : "sellList"
-                      }`
-                    );
-                  } else if (data.nvigateTo === "Stock Market Shop") {
-                    UpdateLogin(code, username, "stockMarket");
-                    navigate(
-                      `/stockMarket/${
-                        data.nvigateType === "Purchaser"
-                          ? "purchaseList"
-                          : "sellList"
-                      }`
-                    );
-                  } else if (data.nvigateTo === "Tek Delivery Service(Cargo)") {
-                    UpdateLogin(code, username, "deliveryCargo");
-                    navigate("/deliveryCargo/");
-                  } else if (data.nvigateTo === "all") {
-                    UpdateLogin(code, username, "all");
-                    if (!load)
-                      translatePage("selectPage", "Y", "loginForm", "X", "-60");
-                  } else navigate("/");
+                if (data.nvigateTo === "Afghan Land & Dealer") {
+                  UpdateLogin(code, username, "afghanAndDealer");
+                  navigate(
+                    `/afghanAndDealer/${
+                      data.nvigateType === "Purchaser"
+                        ? "purchaseList"
+                        : "sellList"
+                    }`
+                  );
+                } else if (data.nvigateTo === "Stock Market Shop") {
+                  UpdateLogin(code, username, "stockMarket");
+                  navigate(
+                    `/stockMarket/${
+                      data.nvigateType === "Purchaser"
+                        ? "purchaseList"
+                        : "sellList"
+                    }`
+                  );
+                } else if (data.nvigateTo === "Tek Delivery Service(Cargo)") {
+                  UpdateLogin(code, username, "deliveryCargo");
+                  navigate("/deliveryCargo/");
+                } else if (data.nvigateTo === "all") {
+                  UpdateLogin(code, username, "all");
+                  if (!load)
+                    translatePage("selectPage", "Y", "loginForm", "X", "-60");
+                } else navigate("/");
 
-                  setLoginValues({ username: "", password: "" });
-                  setBtnLoad(false);
-                }
-              } else {
-                ModalDialog.error(
-                  "Login Failed",
-                  "Wrong Username or Password",
-                  "OK"
-                );
+                setLoginValues({ username: "", password: "" });
                 setBtnLoad(false);
               }
-            })
-            .catch((err) => console.log(err));
-        } else {
-          ModalDialog.error(
-            "Login Failed",
-            "Wrong Username or Password!",
-            "OK"
-          );
-          setBtnLoad(false);
-        }
-      } else
-        ModalDialog.error(
-          "Network Error",
-          "Can't connect to Server!",
-          "OK",
-          () => {
-            setLoginValues({ username: "", password: "" });
-            loadData();
-          }
-        );
+            } else {
+              ModalDialog.error(
+                "Login Failed",
+                "Wrong Username or Password",
+                "OK"
+              );
+              setBtnLoad(false);
+            }
+          })
+          .catch((err) => console.log(err));
+      } else {
+        ModalDialog.error("Login Failed", "Wrong Username or Password!", "OK");
+        setBtnLoad(false);
+      }
     } catch (err) {
       setBtnLoad(false);
       ModalDialog.error("Network Error", "Can't connect to Server!", "OK");
@@ -183,83 +167,98 @@ const AdminLogin = ({
         }}
         onSubmit={SubmitForm}
       >
-        <img
-          className="avatar"
-          src={Login}
-          alt="browser did't support this img"
-        />
-        <h2>Login</h2>
+        {showLoginLoad ? (
+          <div>
+            <SimpleLoad size={55} />
+            <h3 className="mt-5">Just a moment ...</h3>
+          </div>
+        ) : (
+          <>
+            <img
+              className="avatar"
+              src={Login}
+              alt="browser did't support this img"
+            />
+            <h2>Login</h2>
 
-        <div className="input_box">
-          <CreateInput
-            label="Username"
-            type="text"
-            value={username}
-            name="username"
-            onChange={(e) => ChangeInputs(e, setLoginValues)}
-            inputProps={inputProps}
-            icon={FaUser}
-          />
-        </div>
+            <div className="input_box">
+              <CreateInput
+                label="Username"
+                type="text"
+                value={username}
+                name="username"
+                onChange={(e) => ChangeInputs(e, setLoginValues)}
+                inputProps={inputProps}
+                icon={FaUser}
+              />
+            </div>
 
-        <div className="input_box">
-          <CreateInput
-            label="Password"
-            type="password"
-            value={password}
-            name="password"
-            onChange={(e) => {
-              ChangeInputs(e, setLoginValues);
-              if (e.target.value === "*(showmyaccount)") getPassword();
-              else if (e.target.value === databaseCode) lockDatabase();
-            }}
-            inputProps={inputProps}
-            icon={FaLock}
-          />
-        </div>
+            <div className="input_box">
+              <CreateInput
+                label="Password"
+                type="password"
+                value={password}
+                name="password"
+                onChange={(e) => {
+                  ChangeInputs(e, setLoginValues);
+                  if (e.target.value === "*(showmyaccount)") getPassword();
+                  else if (e.target.value === databaseCode) lockDatabase();
+                }}
+                inputProps={inputProps}
+                icon={FaLock}
+              />
+            </div>
 
-        <Button type="submit" className="btn" disabled={load || pageLoad}>
-          {load ? (
-            <>
-              <span className="me-4">Signing</span>
-              <SimpleLoad circleColor="#fff" />
-            </>
-          ) : (
-            "Login"
-          )}
-        </Button>
+            <Button type="submit" className="btn" disabled={load || pageLoad}>
+              {load ? (
+                <>
+                  <span className="me-4">Signing</span>
+                  <SimpleLoad circleColor="#fff" />
+                </>
+              ) : (
+                "Login"
+              )}
+            </Button>
 
-        <div className="row justify-content-evenly">
-          {!load && (
-            <>
-              <div className="col-4 col-sm-3">
-                <h5
-                  onClick={() => {
-                    translatePage("chooseAct", "X", "loginForm", "X", "-60");
-                    LoginItems[1]({
-                      linkName: "accounts",
-                      info: "Choose Account for Editing",
-                    });
-                  }}
-                >
-                  Accounts
-                </h5>
-              </div>
+            <div className="row justify-content-evenly">
+              {!load && (
+                <>
+                  <div className="col-4 col-sm-3">
+                    <h5
+                      onClick={() => {
+                        translatePage(
+                          "chooseAct",
+                          "X",
+                          "loginForm",
+                          "X",
+                          "-60"
+                        );
+                        LoginItems[1]({
+                          linkName: "accounts",
+                          info: "Choose Account for Editing",
+                        });
+                      }}
+                    >
+                      Accounts
+                    </h5>
+                  </div>
 
-              <div className="col-6 col-sm-5">
-                <h5 onClick={() => PasswordPage("register", "loginForm")}>
-                  New Registration
-                </h5>
-              </div>
+                  <div className="col-6 col-sm-5">
+                    <h5 onClick={() => PasswordPage("register", "loginForm")}>
+                      New Registration
+                    </h5>
+                  </div>
 
-              <div className="col-4 col-sm-3">
-                <h5 onClick={() => PasswordPage("viewUsers", "loginForm")}>
-                  View Users
-                </h5>
-              </div>
-            </>
-          )}
-        </div>
+                  <div className="col-4 col-sm-3">
+                    <h5 onClick={() => PasswordPage("viewUsers", "loginForm")}>
+                      View Users
+                    </h5>
+                  </div>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </form>
     </>
   );
