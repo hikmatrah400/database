@@ -107,8 +107,12 @@ const App = () => {
   const [filterData, setFilterData] = useState([]);
   const [indexNum, setIndexNum] = useState(null);
 
-  const [itemValue, setItemValue] = useState("");
-  const [searchValue, setSearchValue] = useState("");
+  const [filterRows, setFilterRows] = useState({
+    itemVal: "",
+    searchVal: "",
+    prevItem: "",
+    prevSearch: "",
+  });
   const [options, setOptions] = useState({
     items: [],
     dealers: [],
@@ -343,11 +347,11 @@ const App = () => {
 
   const GetLogin = async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(notLoginApi);
-
       const getUser = sessionStorage.getItem("partOne");
       const getCode = sessionStorage.getItem("partTwo");
+
+      if (login.userCode === "" && login.prevCode === "") setLoading(true);
+      const response = await axios.get(notLoginApi);
       const filterUser = response.data.find((elm) => elm.partOne === getUser);
 
       setLogin({
@@ -440,8 +444,11 @@ const App = () => {
 
   useEffect(() => {
     loadData(true);
-    loadAllDatabaseData();
+    // eslint-disable-next-line
+  }, []);
 
+  useEffect(() => {
+    loadAllDatabaseData();
     // eslint-disable-next-line
   }, [login.userCode]);
 
@@ -464,8 +471,7 @@ const App = () => {
     SaveData,
     UpdateData,
 
-    ItemValue: [itemValue, setItemValue],
-    SearchValue: [searchValue, setSearchValue],
+    FilterRows: [filterRows, setFilterRows],
     onlyDataAndFilter,
     setDataAndFilter,
     DeleteObj: [deleteData, setDeleteData],
@@ -537,8 +543,7 @@ const App = () => {
             <Stock
               {...{
                 PurAndSell: [purchaseData, sellData],
-                ItemValue: [itemValue, setItemValue],
-                SearchValue: [searchValue, setSearchValue],
+                FilterRows: [filterRows, setFilterRows],
               }}
               {...essentialProp}
             />
@@ -553,8 +558,7 @@ const App = () => {
                 setExpenseData,
                 DeleteObj: [deleteData, setDeleteData],
                 PrevInput: [prevInput, setPrevInput],
-                ItemValue: [itemValue, setItemValue],
-                SearchValue: [searchValue, setSearchValue],
+                FilterRows: [filterRows, setFilterRows],
                 expenseData,
                 purchaseData,
                 sellData,

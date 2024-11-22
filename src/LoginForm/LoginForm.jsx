@@ -124,11 +124,12 @@ const LoginForm = ({
 
   const loadData = async () => {
     try {
+      setShowLoginLoad(true);
       const response = await axios.get(notLoginAPI);
       setData(response.data);
       setShowLoginLoad(false);
     } catch (error) {
-      setLoading(false);
+      setShowLoginLoad(false);
       ModalDialog.error("Network Error", "Can't connect to Server!");
     }
   };
@@ -136,14 +137,23 @@ const LoginForm = ({
   useEffect(() => {
     sessionStorage.removeItem("partOne");
     sessionStorage.removeItem("partTwo");
-    setLogin({ prevCode: "", userCode: "", path: "" });
-    setShowLoginLoad(true);
+    setLogin({
+      user: "",
+      prevCode: "",
+      userCode: "",
+      adminPath: "",
+      badgeColor: "",
+      path: "",
+      type: "",
+    });
     loadData();
 
     // eslint-disable-next-line
   }, []);
 
-  const updateLoginData = (data, code, user, path) => {
+  const UpdateLogin = async (code, user, path) => {
+    setLoading(true);
+
     const filterUser = data.find((elm) => elm.partOne === user);
     if (filterUser !== undefined) {
       axios
@@ -160,11 +170,6 @@ const LoginForm = ({
           ModalDialog.error("Network Error", "Can't Connect to Server!", "OK");
         });
     }
-  };
-
-  const UpdateLogin = async (code, user, path) => {
-    setLoading(true);
-    updateLoginData(data, code, user, path);
   };
 
   const PasswordPage = (linkValue, outValue) => {
@@ -267,6 +272,8 @@ const LoginForm = ({
                     UpdateLogin,
                     databaseCode,
                     showLoginLoad,
+                    loginData: data,
+                    loadData,
                     ...PageProp,
                   }}
                 />

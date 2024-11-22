@@ -21,8 +21,7 @@ const ExpenseGrid = ({
   updateStates,
   setExpenseData,
   Data,
-  ItemValue,
-  SearchValue,
+  FilterRows,
   PrevInput,
   filterData,
   IndexNum,
@@ -55,11 +54,11 @@ const ExpenseGrid = ({
   }))(Tooltip);
 
   const FilterRecords = FilterRow.filterBtn(
-    FilterRow.searchTextBox(setAnchorEl, ItemValue[1])
+    FilterRow.searchTextBox(setAnchorEl, FilterRows)
   );
   const FilterLowerItems = FilterRow.filterRecords(
     filterData,
-    ItemValue[0],
+    FilterRows[0].itemVal,
     Data[1],
     (res) => totalShortCut(res)
   );
@@ -146,11 +145,15 @@ const ExpenseGrid = ({
           setExpenseData(filterData);
           updateStates(filterData);
 
-          if (SearchValue[0] !== "") {
+          if (FilterRows[0].searchVal !== "") {
             const res = filterData.filter((f) =>
-              f[ItemValue[0]].toString().toLowerCase().includes(SearchValue[0])
+              f[FilterRows[0].itemVal]
+                .toString()
+                .toLowerCase()
+                .includes(FilterRows[0].searchVal)
             );
             Data[1](res);
+            totalShortCut(res);
           }
 
           toast.success("Records Deleted Successfully.");
@@ -337,8 +340,7 @@ const ExpenseGrid = ({
       </div>
 
       <FilterRow.Menu
-        {...{ open, anchorEl, handleClose }}
-        searchValue={SearchValue}
+        {...{ open, anchorEl, handleClose, FilterRows }}
         filterRecord={FilterLowerItems}
       />
     </div>

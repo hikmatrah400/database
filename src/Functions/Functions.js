@@ -73,12 +73,16 @@ export const RowStyle = (index, id, romove, color) => {
 };
 
 export const FilterRow = {
-  searchTextBox: (anchorEl, setItem) => (newItem, e) => {
+  searchTextBox: (anchorEl, FilterRows) => (newItem, e) => {
     anchorEl(e.currentTarget);
     setTimeout(() => {
       document.getElementById("filterRecord").focus();
     }, 100);
-    setItem(newItem);
+    FilterRows[1]((prev) => ({ ...prev, itemVal: newItem }));
+
+    if (FilterRows[0].prevItem === newItem)
+      FilterRows[1]((prev) => ({ ...prev, prevSearch: prev.searchVal }));
+    else FilterRows[1]((prev) => ({ ...prev, prevSearch: "" }));
   },
   filterBtn: (state) => (name) => {
     return (
@@ -99,7 +103,7 @@ export const FilterRow = {
     setData(res);
     if (method) method(res);
   },
-  Menu: ({ open, anchorEl, handleClose, searchValue, filterRecord }) => (
+  Menu: ({ open, anchorEl, handleClose, FilterRows, filterRecord }) => (
     <Menu
       id="long-menu"
       className="gridFilter"
@@ -112,10 +116,16 @@ export const FilterRow = {
       <input
         id="filterRecord"
         type="search"
-        value={searchValue[0]}
+        value={FilterRows[0].prevSearch}
         placeholder="Enter to Filter..."
         onChange={(e) => {
-          searchValue[1](e.target.value);
+          FilterRows[1]((prev) => ({
+            ...prev,
+            searchVal: e.target.value,
+            prevItem: prev.itemVal,
+            prevSearch: e.target.value,
+          }));
+
           filterRecord(e.target.value);
         }}
         style={{

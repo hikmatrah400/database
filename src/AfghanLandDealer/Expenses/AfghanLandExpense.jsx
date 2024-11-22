@@ -18,8 +18,7 @@ const AfghanLandExpense = ({
   purchaseData,
   sellData,
   Login,
-  ItemValue,
-  SearchValue,
+  FilterRows,
   DeleteObj,
   GetOneData,
   setLoading,
@@ -96,8 +95,12 @@ const AfghanLandExpense = ({
 
   useEffect(() => {
     Login[1]();
-    ItemValue[1]("");
-    SearchValue[1]("");
+    FilterRows[1]({
+      itemVal: "",
+      searchVal: "",
+      prevItem: "",
+      prevSearch: "",
+    });
     setUpdateData([]);
 
     if (
@@ -326,8 +329,7 @@ const AfghanLandExpense = ({
               IndexNum={[indexNum, setIndexNum]}
               Total={[total, setTotal]}
               {...{
-                ItemValue,
-                SearchValue,
+                FilterRows,
                 apiName: pagePath ? expensesApi : stockExpenseApi,
                 load,
                 Login,

@@ -33,8 +33,8 @@ const Gridveiw = ({
   InputData,
   PrevInput,
   total,
-  ItemValue,
-  SearchValue,
+  FilterRows,
+
   ResetData,
   FilterType,
   totalShortCut,
@@ -57,8 +57,13 @@ const Gridveiw = ({
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    ItemValue[1]("");
-    SearchValue[1]("");
+    FilterRows[1]({
+      itemVal: "",
+      searchVal: "",
+      prevItem: "",
+      prevSearch: "",
+    });
+
     setItemSelected([]);
     // eslint-disable-next-line
   }, []);
@@ -80,11 +85,11 @@ const Gridveiw = ({
   };
 
   const FilterRecords = FilterRow.filterBtn(
-    FilterRow.searchTextBox(setAnchorEl, ItemValue[1])
+    FilterRow.searchTextBox(setAnchorEl, FilterRows)
   );
   const FilterLowerItems = FilterRow.filterRecords(
     FilterData[0],
-    ItemValue[0],
+    FilterRows[0].itemVal,
     Data[1],
     (res) => totalShortCut(res)
   );
@@ -213,11 +218,15 @@ const Gridveiw = ({
 
           FilterGridTypes(filterData, FilterGridType[0]);
 
-          if (SearchValue[0] !== "") {
+          if (FilterRows[0].searchVal !== "") {
             const res = filterData.filter((f) =>
-              f[ItemValue[0]].toString().toLowerCase().includes(SearchValue[0])
+              f[FilterRows[0].itemVal]
+                .toString()
+                .toLowerCase()
+                .includes(FilterRows[0].searchVal)
             );
             Data[1](res);
+            totalShortCut(res);
           }
 
           toast.success(
@@ -273,7 +282,7 @@ const Gridveiw = ({
                 value={FilterGridType[0]}
                 onChange={(e) => {
                   FilterGridType[1](e.target.value);
-                  SearchValue[1]("");
+                  FilterRows[1]((prev) => ({ ...prev, searchVal: "" }));
                   FilterGridTypes(
                     More ? purchaseData : sellData,
                     e.target.value
@@ -297,7 +306,7 @@ const Gridveiw = ({
                   value={FilterType[0]}
                   onChange={(e) => {
                     FilterType[1](e.target.value);
-                    SearchValue[1]("");
+                    FilterRows[1]((prev) => ({ ...prev, searchVal: "" }));
                     FilterSellType(e.target.value);
                   }}
                   className="form-select"
@@ -577,8 +586,7 @@ const Gridveiw = ({
       </div>
 
       <FilterRow.Menu
-        {...{ open, anchorEl, handleClose }}
-        searchValue={SearchValue}
+        {...{ open, anchorEl, handleClose, FilterRows }}
         filterRecord={FilterLowerItems}
       />
     </>

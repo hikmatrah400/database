@@ -7,8 +7,7 @@ const StockGrid = ({
   mainData,
   filtermainData,
   setMainData,
-  ItemValue,
-  SearchValue,
+  FilterRows,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -18,11 +17,11 @@ const StockGrid = ({
   };
 
   const FilterRecords = FilterRow.filterBtn(
-    FilterRow.searchTextBox(setAnchorEl, ItemValue[1])
+    FilterRow.searchTextBox(setAnchorEl, FilterRows)
   );
   const FilterLowerItems = FilterRow.filterRecords(
     filtermainData,
-    ItemValue[0],
+    FilterRows[0].itemVal,
     setMainData
   );
 
@@ -105,8 +104,7 @@ const StockGrid = ({
       </div>
 
       <FilterRow.Menu
-        {...{ open, anchorEl, handleClose }}
-        searchValue={SearchValue}
+        {...{ open, anchorEl, handleClose, FilterRows }}
         filterRecord={FilterLowerItems}
       />
     </div>

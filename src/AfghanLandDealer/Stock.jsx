@@ -17,8 +17,7 @@ const Stock = ({
   GetOneData,
   PurAndSell,
   load,
-  ItemValue,
-  SearchValue,
+  FilterRows,
 }) => {
   const { path } = useParams();
   const [purchaseData, setPurchaseData] = useState([]);
@@ -109,8 +108,12 @@ const Stock = ({
 
   useEffect(() => {
     Login[1]();
-    ItemValue[1]("");
-    SearchValue[1]("");
+    FilterRows[1]({
+      itemVal: "",
+      searchVal: "",
+      prevItem: "",
+      prevSearch: "",
+    });
     loadPurandSell();
     // eslint-disable-next-line
   }, []);
@@ -178,8 +181,7 @@ const Stock = ({
             mainData,
             filtermainData,
             setMainData,
-            ItemValue,
-            SearchValue,
+            FilterRows,
           }}
         />
       </div>

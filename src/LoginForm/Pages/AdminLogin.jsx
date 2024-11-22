@@ -22,6 +22,8 @@ const AdminLogin = ({
   ChangeInputs,
   UpdateLogin,
   databaseCode,
+  loadData,
+  loginData,
   PasswordPage,
 }) => {
   const ModalDialog = useContext(ShowDialog);
@@ -84,76 +86,65 @@ const AdminLogin = ({
     // eslint-disable-next-line
   }, []);
 
-  const url = `${AdminLoginAPI}?partOne=${username}&partTwo=${password}`;
-  const GetData = async () => {
+  const showError = () => {
+    ModalDialog.error("Login Failed", "Wrong Username or Password!", "OK");
+    setBtnLoad(false);
+  };
+
+  const SubmitForm = async (e) => {
+    e.preventDefault();
+    const getCode = sessionStorage.getItem("partTwo");
+
+    setBtnLoad(true);
     try {
-      setBtnLoad(true);
-      const response = await axios.get(url);
-      const data = response.data;
+      const response = await axios.get(AdminLoginAPI);
+      const getUsers = response.data.find((elm) => elm.partOne === username);
 
-      if (data.length > 0) {
-        axios
-          .get(url)
-          .then((res) => {
-            const data = res.data[0];
-            if (username === data.partOne && password === data.partTwo) {
-              if (code !== 0) {
-                sessionStorage.setItem("partOne", username);
-                sessionStorage.setItem("partTwo", code);
+      if (getUsers === undefined) showError();
+      else if (username === getUsers.partOne && password === getUsers.partTwo) {
+        if (code !== 0) {
+          sessionStorage.setItem("partOne", username);
+          sessionStorage.setItem("partTwo", code);
 
-                if (data.nvigateTo === "Afghan Land & Dealer") {
-                  UpdateLogin(code, username, "afghanAndDealer");
-                  navigate(
-                    `/afghanAndDealer/${
-                      data.nvigateType === "Purchaser"
-                        ? "purchaseList"
-                        : "sellList"
-                    }`
-                  );
-                } else if (data.nvigateTo === "Stock Market Shop") {
-                  UpdateLogin(code, username, "stockMarket");
-                  navigate(
-                    `/stockMarket/${
-                      data.nvigateType === "Purchaser"
-                        ? "purchaseList"
-                        : "sellList"
-                    }`
-                  );
-                } else if (data.nvigateTo === "Tek Delivery Service(Cargo)") {
-                  UpdateLogin(code, username, "deliveryCargo");
-                  navigate("/deliveryCargo/");
-                } else if (data.nvigateTo === "all") {
-                  UpdateLogin(code, username, "all");
-                  if (!load)
-                    translatePage("selectPage", "Y", "loginForm", "X", "-60");
-                } else navigate("/");
-
-                setLoginValues({ username: "", password: "" });
-                setBtnLoad(false);
-              }
-            } else {
-              ModalDialog.error(
-                "Login Failed",
-                "Wrong Username or Password",
-                "OK"
+          if (getUsers.nvigateTo === "Afghan Land & Dealer") {
+            UpdateLogin(code, username, "afghanAndDealer");
+            setTimeout(() => {
+              navigate(
+                `/afghanAndDealer/${
+                  getUsers.nvigateType === "Purchaser"
+                    ? "purchaseList"
+                    : "sellList"
+                }`
               );
-              setBtnLoad(false);
-            }
-          })
-          .catch((err) => console.log(err));
-      } else {
-        ModalDialog.error("Login Failed", "Wrong Username or Password!", "OK");
-        setBtnLoad(false);
-      }
+            }, 300);
+          } else if (getUsers.nvigateTo === "Stock Market Shop") {
+            UpdateLogin(code, username, "stockMarket");
+            setTimeout(() => {
+              navigate(
+                `/stockMarket/${
+                  getUsers.nvigateType === "Purchaser"
+                    ? "purchaseList"
+                    : "sellList"
+                }`
+              );
+            }, 300);
+          } else if (getUsers.nvigateTo === "Tek Delivery Service(Cargo)") {
+            UpdateLogin(code, username, "deliveryCargo");
+            if (!load) navigate("/deliveryCargo/");
+          } else if (getUsers.nvigateTo === "all") {
+            UpdateLogin(code, username, "all");
+            if (!load)
+              translatePage("selectPage", "Y", "loginForm", "X", "-60");
+          } else navigate("/");
+
+          setLoginValues({ username: "", password: "" });
+          setBtnLoad(false);
+        }
+      } else showError();
     } catch (err) {
       setBtnLoad(false);
       ModalDialog.error("Network Error", "Can't connect to Server!", "OK");
     }
-  };
-
-  const SubmitForm = (e) => {
-    e.preventDefault();
-    GetData();
   };
 
   return (
@@ -171,6 +162,15 @@ const AdminLogin = ({
           <div>
             <SimpleLoad size={55} />
             <h3 className="mt-5">Just a moment ...</h3>
+          </div>
+        ) : loginData.length === 0 ? (
+          <div>
+            <h3 className="mt-5" style={{ fontSize: "2.5rem" }}>
+              Can't Connect to Server!
+            </h3>
+            <Button className="btn mt-5" onClick={loadData}>
+              Reload Data
+            </Button>
           </div>
         ) : (
           <>
