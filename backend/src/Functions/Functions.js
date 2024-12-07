@@ -4,10 +4,7 @@ const Register = require("../models/Login/register");
 const verifyToken = async (req, res, next) => {
   try {
     const authToken = req.header("auth-token");
-    const verifyToken = jwt.verify(
-      authToken,
-      "!@databasehasbeensecuredbyadmin$%?"
-    );
+    const verifyToken = jwt.verify(authToken, process.env.SECRETKEY);
     const findUser = await Register.findById(verifyToken.id);
 
     if (findUser) {
@@ -25,10 +22,7 @@ const verifyToken = async (req, res, next) => {
 const verifyAdminToken = async (req, res, next) => {
   try {
     const authToken = req.header("auth-token");
-    const verifyToken = jwt.verify(
-      authToken,
-      "!@databasehasbeensecuredbyadmin$%?"
-    );
+    const verifyToken = jwt.verify(authToken, process.env.SECRETKEY);
     const findUser = await Register.findOne({
       _id: verifyToken.id,
       partThree: "success",

@@ -9,9 +9,7 @@ router.get("/getLock", async (req, res) => {
     const data = await LockDatabase.find({});
     const verifyToken = jwt.verify(
       data[0].database,
-      `!@databasehasbeensecuredbyadmin$%?${
-        data[0].message.length > 0 ? "lock" : ""
-      }`
+      `${process.env.SECRETKEY}${data[0].message.length > 0 ? "lock" : ""}`
     );
 
     res.status(201).send({ data: data, value: verifyToken.value });
@@ -26,14 +24,11 @@ router.put("/lock/:id", async (req, res) => {
     const message = req.body.message;
 
     const authToken = req.header("auth-token");
-    const verifyToken = jwt.verify(
-      authToken,
-      "!@databasehasbeensecuredbyadmin$%?"
-    );
+    const verifyToken = jwt.verify(authToken, process.env.SECRETKEY);
 
     const createToken = jwt.sign(
       { value: message.length > 0 ? false : true },
-      `!@databasehasbeensecuredbyadmin$%?${message.length > 0 ? "lock" : ""}`
+      `${process.env.SECRETKEY}${message.length > 0 ? "lock" : ""}`
     );
 
     if (verifyToken.name) {

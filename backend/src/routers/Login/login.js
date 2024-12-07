@@ -11,7 +11,7 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     const data = { id: user.id };
-    const authToken = jwt.sign(data, "!@databasehasbeensecuredbyadmin$%?");
+    const authToken = jwt.sign(data, process.env.SECRETKEY);
 
     if (!isMatch) {
       res.status(404).send("Wrong username or password");
@@ -33,10 +33,7 @@ router.post("/login", async (req, res) => {
 router.post("/adminpassword", async (req, res) => {
   try {
     const authToken = req.header("auth-token");
-    const verifyToken = jwt.verify(
-      authToken,
-      "!@databasehasbeensecuredbyadmin$%?"
-    );
+    const verifyToken = jwt.verify(authToken, process.env.SECRETKEY);
     const getData = await Regiser.findOne({
       _id: verifyToken.id,
       partThree: "success",
@@ -58,10 +55,7 @@ router.post("/adminpassword", async (req, res) => {
 router.get("/verifyToken", async (req, res) => {
   try {
     const authToken = req.header("auth-token");
-    const verifyToken = jwt.verify(
-      authToken,
-      "!@databasehasbeensecuredbyadmin$%?"
-    );
+    const verifyToken = jwt.verify(authToken, process.env.SECRETKEY);
     const getData = await Regiser.findById(verifyToken.id);
     res.status(201).send({ userData: getData, load: false });
   } catch (err) {
