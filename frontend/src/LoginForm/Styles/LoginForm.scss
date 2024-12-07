@@ -1,0 +1,320 @@
+@import "../Functions/Functions.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@mixin fontPoppins {
+  font-family: "poppinsSemi", sans-serif;
+}
+
+@mixin DisplayFlex($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+.allLoginContainer {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include fontPoppins;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  img {
+    user-select: none;
+  }
+
+  .greeting {
+    position: absolute;
+    left: 4rem;
+    top: 1rem;
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #4481eb, #00aae3, #4481eb);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animateGreet 2s ease-in-out alternate-reverse infinite;
+
+    @keyframes animateGreet {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.08);
+      }
+    }
+  }
+
+  .content_container {
+    height: 100vh;
+    position: relative;
+
+    .content {
+      position: absolute;
+      bottom: 18rem;
+      width: 150%;
+      @include DisplayFlex(center, center);
+      flex-direction: column;
+      color: #fff;
+      font-size: 1.7rem;
+
+      section {
+        text-align: center;
+        width: 38rem;
+        height: 5rem;
+      }
+    }
+  }
+
+  .content_media_container {
+    position: absolute;
+    width: 100rem;
+    height: 100rem;
+    top: -84rem;
+    left: -31rem;
+    border-radius: 50%;
+    align-items: flex-end;
+    justify-content: center;
+    background: linear-gradient(to right, #4481eb, #04befe);
+
+    .content {
+      @include DisplayFlex(center, center);
+      flex-direction: column;
+      color: #fff;
+      font-size: 1.6rem;
+      position: absolute;
+      bottom: 4rem;
+
+      section {
+        text-align: center;
+        width: 35rem;
+        height: 5rem;
+      }
+    }
+  }
+
+  .login_wave {
+    position: fixed;
+    width: 80%;
+    height: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+
+  .login_container {
+    height: 100vh;
+    padding: 0 0.2rem;
+    @include DisplayFlex(center, center);
+    position: relative;
+
+    .main_container {
+      width: 100%;
+      height: auto;
+      @include DisplayFlex(center, center);
+      text-align: center;
+
+      form {
+        position: absolute;
+        width: 100%;
+        transition: all 0.6s ease;
+
+        .avatar {
+          width: 10rem;
+        }
+
+        h2 {
+          font-size: 3.2rem;
+          margin: 2rem 0 4rem;
+          color: #333;
+          @include fontPoppins;
+        }
+
+        .editActCheckbox {
+          zoom: 135%;
+          padding: 0;
+          left: -1.05rem;
+
+          svg {
+            color: #00aae3;
+          }
+        }
+
+        .input_box {
+          position: relative;
+          display: grid;
+          grid-template-columns: 3rem 34rem;
+          margin: 3rem 0;
+          padding: 1.5rem 0;
+          border-bottom: 0.2rem solid #d9d9d9;
+
+          &::after,
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: -0.2rem;
+            width: 0;
+            height: 0.2rem;
+            background: #04befe;
+            transition: 0.3s ease;
+          }
+
+          &::before {
+            left: 50%;
+          }
+          &::after {
+            right: 50%;
+          }
+
+          &.focus::after,
+          &.focus::before {
+            width: 50%;
+          }
+
+          label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translate(2.5rem, -50%);
+            color: #adadad;
+            font-size: 1.8rem;
+            pointer-events: none;
+            transition: 0.3s ease;
+          }
+
+          .input {
+            position: absolute;
+            width: 90%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            margin-left: 3rem;
+            padding: 0.5rem 0.7rem;
+            font-size: 1.8rem;
+            color: #000;
+            @include fontPoppins;
+
+            &::-webkit-inner-spin-button {
+              display: none;
+            }
+
+            &:focus ~ .i svg,
+            &:valid ~ .i svg {
+              color: #04befe;
+            }
+
+            &:focus ~ label,
+            &:valid ~ label {
+              transform: translate(2.5rem, -150%);
+              font-size: 1.6rem;
+            }
+          }
+
+          .i {
+            pointer-events: none;
+            @include DisplayFlex(center, center);
+
+            svg {
+              transition: 0.3s ease;
+              color: #c2c2c2;
+              font-size: 1.65rem;
+            }
+          }
+        }
+
+        h5 {
+          @include LinkStyle;
+
+          &:hover {
+            color: #04befe;
+            text-decoration: underline;
+          }
+        }
+        .btn {
+          display: block;
+          width: 100%;
+          height: 5rem;
+          border-radius: 2.5rem;
+          margin: 1rem 0;
+          text-transform: uppercase;
+          font-size: 1.9rem;
+          outline: none;
+          border: none;
+          color: #fff;
+          cursor: pointer;
+          @include fontPoppins;
+          background: linear-gradient(to right, #4481eb, #04befe, #4481eb);
+          background-size: 200%;
+          transition: 0.5s;
+
+          &:hover {
+            background-position: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .allLoginContainer {
+    .mediaContainer {
+      padding: 0 8rem !important;
+    }
+
+    .mediaGreet {
+      position: relative;
+      top: 2rem;
+      margin-right: 5.5rem;
+      font-size: 1.8rem !important;
+      color: #fff;
+      background: transparent;
+      background-clip: unset;
+      -webkit-text-fill-color: unset;
+    }
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .allLoginContainer {
+    .mediaContainer {
+      padding: 0 4rem !important;
+    }
+
+    .greeting {
+      left: 3rem;
+    }
+
+    .login_container {
+      margin-top: 19.8rem;
+      height: auto;
+
+      .main_container {
+        justify-content: center;
+        align-items: flex-start;
+
+        form {
+          padding-bottom: 2rem;
+
+          h2 {
+            margin: 3rem 0 4rem;
+            font-size: 2.8rem;
+          }
+        }
+      }
+
+      .content_container .content {
+        color: #000;
+        top: 9rem;
+      }
+    }
+  }
+}
