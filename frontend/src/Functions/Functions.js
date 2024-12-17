@@ -143,36 +143,7 @@ export const filterPageType = (data, login) => {
   return filterData;
 };
 
-// Date Functions =--------------------------------------------
-export const loadCurrentDate = async (axios, setState) => {
-  try {
-    const response = await axios.get(
-      "http://worldtimeapi.org/api/timezone/Asia/Kabul"
-    );
-    setState(response.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getCurrentDate = (object, setState) => {
-  const month = new Date(object).toLocaleString("en-Us", {
-    month: "2-digit",
-  });
-  const year = new Date(object).getFullYear();
-  const day = new Date(object).toLocaleString("en-Us", {
-    day: "2-digit",
-  });
-  const newDay = Number(day) + 1;
-
-  if (setState)
-    setState((prev) => ({
-      ...prev,
-      date: `${year}-${month}-${newDay}`,
-    }));
-  else return `${year}-${month}-${newDay}`;
-};
-
+// date functions --------------------------------------------------
 export const generateShortDate = (date) => {
   const day = date.slice(8, 10);
   const newDay = Number(day) + 1;
@@ -180,26 +151,16 @@ export const generateShortDate = (date) => {
   const month = new Date(newDate).toLocaleString("default", {
     month: "short",
   });
-  const year = new Date(date).getFullYear();
+  const year = new Date(newDate).getFullYear();
 
   return `${month}-${day}-${year}`;
 };
 
-export const generateTime = (fullDate) => {
-  const date = getCurrentDate(fullDate.datetime);
+export const generateNewDateTime = () => {
+  const month = new Date().toLocaleString("en-Us", { month: "short" });
+  const year = new Date().getFullYear();
+  const day = new Date().toLocaleString("en-Us", { day: "2-digit" });
+  const getTime = new Date().toLocaleTimeString();
 
-  const day = date.slice(8, 10);
-  const newDay = Number(day) + 1;
-  const newDate = `${date.slice(0, 8)}${newDay < 10 ? `0${newDay}` : newDay}`;
-  const month = new Date(newDate).toLocaleString("default", {
-    month: "short",
-  });
-  const year = new Date(date).getFullYear();
-
-  const showOutput = `${month}-${day}-${year} | ${fullDate.datetime.slice(
-    11,
-    19
-  )}`;
-
-  return showOutput;
+  return `${month}-${day}-${year} | ${getTime}`;
 };

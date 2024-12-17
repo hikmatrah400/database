@@ -4,7 +4,10 @@ import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 import { historyApi } from "../../Apis";
 import ShowDialog from "../../UI/BsModalDialog/BsModalDialog";
-import { generateShortDate, generateTime } from "../../Functions/Functions";
+import {
+  generateNewDateTime,
+  generateShortDate,
+} from "../../Functions/Functions";
 
 const ShowCode = ({ inputCol, code, ChangeInputs, More }) => {
   return (
@@ -137,7 +140,6 @@ const ShowType = ({
 };
 
 const InputList = ({
-  currentDate,
   InputData,
   PrevInput,
   GetTypes,
@@ -224,8 +226,8 @@ const InputList = ({
     const Selltotal = qty * sellPrice;
     const Commission = !commission ? 0 : commission * qty;
 
-    const newDate = generateShortDate(date, false);
-    const newHisDate = generateTime(currentDate);
+    const newDate = generateShortDate(date);
+    const newHisDate = generateNewDateTime();
 
     const sendData = {
       ...InputData[0],
@@ -325,6 +327,8 @@ const InputList = ({
         else SaveData(setSellData, sendData);
 
         toast.success("Record Saved Successfully.");
+        FilterType[1]("All");
+        FilterGridType[1]("All");
 
         axios
           .post(`${ApiName}/saveData`, sendData, {

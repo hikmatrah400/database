@@ -8,10 +8,8 @@ import {
   RowStyle,
   SumNumberArray,
   filterPageType,
+  generateNewDateTime,
   generateShortDate,
-  generateTime,
-  getCurrentDate,
-  loadCurrentDate,
 } from "../../Functions/Functions";
 import { expenseApi, historyApi } from "../../Apis";
 import ShowDialog from "../../UI/BsModalDialog/BsModalDialog";
@@ -32,9 +30,12 @@ const AfghanLandExpense = ({
   setLoading,
 }) => {
   const { path } = useParams();
-  const [currentDate, setCurrentDate] = useState({});
   const ModalDialog = useContext(ShowDialog);
   const [updateData, setUpdateData] = useState([]);
+
+  const month = new Date().toLocaleString("en-Us", { month: "2-digit" });
+  const year = new Date().getFullYear();
+  const day = new Date().toLocaleString("en-Us", { day: "2-digit" });
 
   const inputCol = "col-11 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2";
   const [indexNum, setIndexNum] = useState(null);
@@ -52,7 +53,7 @@ const AfghanLandExpense = ({
     .toString()}`;
   const [inputData, setInputData] = useState({
     _id: randomID,
-    date: "",
+    date: `${year}-${month}-${day}`,
     description: "",
     amount: "",
   });
@@ -84,16 +85,15 @@ const AfghanLandExpense = ({
   };
 
   const ResetData = () => {
-    setInputData((prev) => ({
-      ...prev,
+    setInputData({
       _id: randomID,
+      date: `${year}-${month}-${day}`,
       description: "",
       amount: "",
-    }));
+    });
     setIndexNum(null);
 
     RowStyle(indexNum, "", false);
-    loadCurrentDate(axios, setCurrentDate);
   };
 
   useEffect(() => {
@@ -110,8 +110,6 @@ const AfghanLandExpense = ({
   }, []);
 
   useEffect(() => {
-    loadCurrentDate(axios, setCurrentDate);
-
     if (
       purchaseData.length === 0 &&
       sellData.length === 0 &&
@@ -133,14 +131,6 @@ const AfghanLandExpense = ({
     }
     // eslint-disable-next-line
   }, [Login[0].adminPath]);
-
-  useEffect(() => {
-    try {
-      if (!indexNum) getCurrentDate(currentDate.datetime, setInputData);
-    } catch (err) {
-      return null;
-    }
-  }, [inputData._id, currentDate]);
 
   const totalShortCut = (res) => {
     const getDesc = res.map((elm) => elm.description);
@@ -168,14 +158,14 @@ const AfghanLandExpense = ({
     setState(filterData);
     updateStates(filterData);
     ResetData();
-    console.log(filterData);
   };
 
   const FormSubmit = (e) => {
     e.preventDefault();
     const authToken = localStorage.getItem("authToken");
-    const newDate = generateShortDate(date, false);
-    const newHisDate = generateTime(currentDate);
+
+    const newDate = generateShortDate(date);
+    const newHisDate = generateNewDateTime();
 
     const sendData = {
       ...inputData,
@@ -185,7 +175,7 @@ const AfghanLandExpense = ({
     };
 
     if (indexNum && updateData.length > 0) {
-      UpdateData(expenseData, setExpenseData, sendData);
+      UpdateData(expenseData, setExpenseData, inputData);
       toast.success("Expense Updated Successfully.");
       setUpdateData([]);
 

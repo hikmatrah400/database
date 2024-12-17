@@ -5,6 +5,7 @@ import {
   CheckBoxClick,
   FilterRow,
   SelectAllClick,
+  generateNewDateTime,
 } from "../../Functions/Functions";
 import { withStyles } from "@mui/styles";
 import { historyApi } from "../../Apis";
@@ -99,10 +100,7 @@ const ExpenseGrid = ({
           // setLoading(true);
           const filterData = DeleteObj[0].filter((elm) => elm.delId === "");
           const deletedData = DeleteObj[0].filter((elm) => elm.delId !== "");
-
-          const hMonth = new Date().toLocaleString("en-Us", { month: "short" });
-          const hYear = new Date().getFullYear();
-          const hDay = new Date().toLocaleString("en-Us", { day: "2-digit" });
+          const newHisDate = generateNewDateTime();
 
           if (Login[0].path !== "all") {
             const randomID = `${Math.random() + Math.random()}${new Date()
@@ -115,7 +113,7 @@ const ExpenseGrid = ({
               star: false,
               view: false,
               rowType: "deleted",
-              modifyed: `${hMonth}-${hDay}-${hYear} | ${new Date().toLocaleTimeString()}`,
+              modifyed: newHisDate,
               prevData: undefined,
               delId: "",
             }));

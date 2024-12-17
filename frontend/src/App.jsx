@@ -6,12 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoginForm from "./LoginForm/LoginForm";
 import axios from "axios";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import {
-  SumNumberArray,
-  filterPageType,
-  getCurrentDate,
-  loadCurrentDate,
-} from "./Functions/Functions";
+import { SumNumberArray, filterPageType } from "./Functions/Functions";
 
 import NoPageFound from "./NoPageFound/NoPageFound";
 import LockDatabase from "./LockDatabase";
@@ -67,6 +62,10 @@ const App = () => {
   const [filterGridType, setFilterGridType] = useState("All");
 
   // Purchase and Sell start --------------------------------------
+  const month = new Date().toLocaleString("en-Us", { month: "2-digit" });
+  const year = new Date().getFullYear();
+  const day = new Date().toLocaleString("en-Us", { day: "2-digit" });
+
   const randomID = `${Math.random() + Math.random()}${new Date()
     .getTime()
     .toString()}`;
@@ -74,7 +73,7 @@ const App = () => {
   const [prevInput, setPrevInput] = useState({});
   const [inputData, setInputData] = useState({
     _id: randomID,
-    date: "",
+    date: `${year}-${month}-${day}`,
     code: "",
     item: "",
     billNum: "",
@@ -118,8 +117,6 @@ const App = () => {
     qtys: 0,
     sellQtys: 0,
   });
-
-  const [currentDate, setCurrentDate] = useState({});
 
   const GetOneData = async (url, method, load) => {
     try {
@@ -235,6 +232,7 @@ const App = () => {
       return {
         ...prev,
         _id: randomID,
+        date: `${year}-${month}-${day}`,
         code: "",
         item: "",
         billNum: "",
@@ -257,8 +255,6 @@ const App = () => {
         sellQtys: 0,
       };
     });
-
-    loadCurrentDate(axios, setCurrentDate);
   };
 
   const GetOptions = (state) => {
@@ -422,7 +418,6 @@ const App = () => {
   };
 
   const loadAllDatabaseData = () => {
-    loadCurrentDate(axios, setCurrentDate);
     loadPurData();
     loadSellData();
     loadExpenseData();
@@ -470,14 +465,6 @@ const App = () => {
     // eslint-disable-next-line
   }, [login.user]);
 
-  useEffect(() => {
-    try {
-      if (!indexNum) getCurrentDate(currentDate.datetime, setInputData);
-    } catch (err) {
-      return null;
-    }
-  }, [inputData._id, currentDate]);
-
   const essentialProp = {
     load: loading,
     setLoading,
@@ -487,7 +474,6 @@ const App = () => {
   };
 
   const PageProp = {
-    currentDate,
     purchaseData,
     sellData,
     expenseData,

@@ -10,7 +10,7 @@ import {
   CheckBoxClick,
   SelectAllClick,
   FilterRow,
-  generateTime,
+  generateNewDateTime,
 } from "../../Functions/Functions";
 import SimpleLoad from "../../UI/SimpleLoad";
 import { useLocation } from "react-router-dom";
@@ -18,7 +18,6 @@ import { historyApi } from "../../Apis";
 import ShowDialog from "../../UI/BsModalDialog/BsModalDialog";
 
 const Gridveiw = ({
-  currentDate,
   gridHeight,
   marginTop,
   ApiName,
@@ -171,11 +170,11 @@ const Gridveiw = ({
         "Would you like to Delete?",
         "Yes/No",
         () => {
-          const newHisDate = generateTime(currentDate);
+          const newHisDate = generateNewDateTime();
 
           const filterData = DeleteObj[0].filter((elm) => elm.delId === "");
           const deletedData = DeleteObj[0].filter((elm) => elm.delId !== "");
-
+          console.log(deletedData);
           if (Login[0].path !== "all") {
             const randomID = `${Math.random() + Math.random()}${new Date()
               .getTime()
