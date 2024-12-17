@@ -1,5 +1,5 @@
 // const path = "https://database-backend-jnnj.onrender.com";
-const path = "http://localhost:10000";
+const path = "https://database-backend-0oy1.onrender.com";
 
 export const purchaseApi = `${path}/purchase`;
 export const sellApi = `${path}/sell`;
