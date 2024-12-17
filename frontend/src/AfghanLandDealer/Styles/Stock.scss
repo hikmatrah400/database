@@ -1,0 +1,43 @@
+.StockContainer {
+  .headerBtns {
+    overflow: auto;
+
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+
+    button {
+      min-width: max-content;
+      font-size: 1.6rem;
+      padding: 0.5rem 2.2rem;
+      padding-bottom: 0.6rem;
+      background: transparent;
+      border-radius: 5rem;
+      margin: 0 1rem;
+      border: 1px solid #427987;
+      color: #2c5e6a;
+      transition: all 0.2s ease;
+
+      &:disabled {
+        opacity: 1;
+      }
+    }
+
+    .chooseDealer {
+      min-width: max-content;
+      width: 18rem;
+      padding: 0.5rem 2.2rem;
+      border-radius: 5rem;
+      font-size: 1.6rem;
+      box-shadow: none;
+      border: 1px solid #427987;
+      color: #2c5e6a;
+      margin: 0 1rem;
+      font-weight: 600;
+
+      &::-webkit-inner-spin-button {
+        background: red;
+      }
+    }
+  }
+}

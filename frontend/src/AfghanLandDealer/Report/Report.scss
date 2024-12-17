@@ -1,0 +1,52 @@
+.reportCon {
+  border-radius: 1rem;
+  border: 0.1rem solid gray;
+  padding: 0 !important;
+  margin-bottom: 5rem;
+
+  .headerTitle {
+    border-bottom: 0.1rem solid gray;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1rem 0;
+    font-size: 2rem;
+
+    &:nth-child(1) {
+      background: #ffe58e;
+    }
+  }
+
+  .allResultCon {
+    margin-top: 3rem;
+
+    .resultCon {
+      border-bottom: 0.1rem solid #dadada;
+      padding: 0.4rem 0;
+
+      &:last-child {
+        border: none;
+      }
+
+      h2 {
+        font-size: 1.9rem;
+        margin-top: -1rem;
+      }
+    }
+
+    .span {
+      width: 100%;
+      min-width: max-content;
+      border: 0.1rem solid gray;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.5rem;
+      margin-right: 18rem;
+      margin-top: -1rem;
+      font-size: 1.8rem;
+      text-align: center;
+
+      &::selection {
+        background: #008000;
+        color: #fff;
+      }
+    }
+  }
+}
